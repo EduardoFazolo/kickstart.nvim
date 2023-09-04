@@ -26,7 +26,7 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   }
 end
- vim.opt.rtp:prepend(lazypath)
+vim.opt.rtp:prepend(lazypath)
 
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
@@ -35,6 +35,7 @@ end
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
+  'windwp/nvim-ts-autotag',
   'jose-elias-alvarez/null-ls.nvim',
   'MunifTanjim/prettier.nvim',
   {
@@ -104,15 +105,29 @@ require('lazy').setup({
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
+
+    opts = {
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          show_hidden_count = true,
+          hide_dotfiles = false,
+          hide_gitignored = true,
+          hide_by_name = {
+            -- '.git',
+            -- '.DS_Store',
+            -- 'thumbs.db',
+          },
+          never_show = {},
+        },
+      }
+    },
     version = "*",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
     },
-    config = function()
-      require('neo-tree').setup {}
-    end,
   },
 
   -- Git related plugins
@@ -360,14 +375,20 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
+-- [[ TS Stuff ]]
+require('nvim-ts-autotag').setup()
+
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
+
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
   ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = true,
+
+
 
   highlight = { enable = true },
   indent = { enable = true },
