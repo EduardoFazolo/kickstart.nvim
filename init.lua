@@ -35,6 +35,7 @@ vim.opt.rtp:prepend(lazypath)
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
+  { 'akinsho/toggleterm.nvim', version = "*", opts = { --[[ things you want to change go here]] } },
   'windwp/nvim-ts-autotag',
   'jose-elias-alvarez/null-ls.nvim',
   'MunifTanjim/prettier.nvim',
@@ -175,7 +176,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
+  { 'folke/which-key.nvim',    opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -633,6 +634,7 @@ null_ls.setup({
 })
 
 -- CUSTOM KEY MAPPINGS
+vim.keymap.set("n", "<leader>t", "<cmd>ToggleTerm<CR>")
 vim.keymap.set("n", "<leader>ff", function()
   vim.cmd('w')
   vim.cmd('Format')
